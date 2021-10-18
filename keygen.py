@@ -1,6 +1,8 @@
 import os, random
+
+
 def gen_random_int(size:int):
-  return os.urandom(size)
+  return int.from_bytes(os.urandom(size), "little")
 
 def miller_test(odd, num):
   j = 2 + random.randint(1,num - 4)
@@ -41,3 +43,6 @@ def is_prime(num, num_of_times):
       return False
   
   return True
+
+while (is_prime(gen_random_int(128),10)==False):
+  print ('não')
