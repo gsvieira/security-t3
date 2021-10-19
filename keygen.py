@@ -1,8 +1,13 @@
 import os, random
+from timeit import default_timer as timer
 
-
-def gen_random_int(size:int):
-  return int.from_bytes(os.urandom(size), "little")
+def gen_random_int(size:int=128, mask=0):
+  x = os.urandom(size)
+  x = int.from_bytes(x, "little")
+  if mask:
+    return x
+  #x = (x | (1 << (128*8) -1)) | 1
+  return (x | (1 << (128*8) -1)) | 1
 
 def miller_test(odd, num):
   j = 2 + random.randint(1,num - 4)
@@ -44,5 +49,14 @@ def is_prime(num, num_of_times):
   
   return True
 
-while (is_prime(gen_random_int(128),10)==False):
-  print ('não')
+start = timer()
+print(start)
+for i in range(20):
+  
+  while (True):
+    prime = gen_random_int()
+    if(is_prime(prime,10)):
+      break;
+  print(i)
+end = timer()
+print(end - start)
