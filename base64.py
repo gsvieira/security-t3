@@ -21,4 +21,5 @@ int_list = [int(x, 2) for x in bin_list]
 print(int_list)
 mapping = base64_map()
 retorno = [mapping[1][x] for x in int_list]
+retorno = ''.join(retorno)
 print(retorno)
