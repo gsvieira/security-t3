@@ -1,4 +1,4 @@
-import os, random
+import os, random, sys
 from timeit import default_timer as timer
 
 def gen_random_int(size:int=128, mask=0):
@@ -8,6 +8,8 @@ def gen_random_int(size:int=128, mask=0):
     return x
   #x = (x | (1 << (128*8) -1)) | 1
   return (x | (1 << (128*8) -1)) | 1
+
+
 
 def miller_test(odd, num):
   j = 2 + random.randint(1,num - 4)
@@ -49,6 +51,57 @@ def is_prime(num, num_of_times):
   
   return True
 
+def gen_prime_number():
+  while (True):
+    prime = gen_random_int()
+    if(is_prime(prime,10)):
+      return prime
+  
+def phi(num:int):
+  return num - 1
+
+def mdc(n1,n2):
+  resto = 1
+  while (n2!=0):
+    resto = n1%n2
+    n1 = n2
+    n2 = resto
+  return n1
+
+def gen_E(num):
+  while True:
+    e = random.randrange(2,num)
+    if (mdc(num,e) == 1):
+      return e
+
+def gen_D(phi, e):
+  for d in range(phi):
+    if((d*e)%phi ==1):
+      return d
+
+def gen_key_pair(p=0,q=0):
+  if(p==0 or 1 == 0):
+    p = gen_prime_number()
+    q = gen_prime_number()
+  n=p*q
+  print(p)
+  print(q)
+  phi_N = phi(p)*phi(q)
+
+  e = gen_E(phi_N)
+  public_key = (n, e)
+  #print("Essa é sua chave publica: ", public_key)
+  d = gen_D(phi_N,e)
+  #print("Essa é sua chave privada: ", d)
+
+
+if __name__ == '__main__':
+  if (len(sys.argv)<=2 or len(sys.argv)>=4):
+    gen_key_pair()
+  else:
+    gen_key_pair(int(sys.argv[1]), int(sys.argv[2]))
+
+""" 
 start = timer()
 print(start)
 for i in range(20):
@@ -60,3 +113,6 @@ for i in range(20):
   print(i)
 end = timer()
 print(end - start)
+ """
+
+
