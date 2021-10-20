@@ -84,15 +84,15 @@ def gen_key_pair(p=0,q=0):
     p = gen_prime_number()
     q = gen_prime_number()
   n=p*q
-  print(p)
-  print(q)
+  """ print(p)
+  print(q) """
   phi_N = phi(p)*phi(q)
 
   e = gen_E(phi_N)
   public_key = (n, e)
-  #print("Essa é sua chave publica: ", public_key)
+  print("Essa é sua chave publica: ", public_key)
   d = gen_D(phi_N,e)
-  #print("Essa é sua chave privada: ", d)
+  print("Essa é sua chave privada: ", d)
 
 
 if __name__ == '__main__':
