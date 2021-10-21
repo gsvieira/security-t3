@@ -3,7 +3,7 @@ import keygen,string
 def encode(public_key, str:string):
     result = []
     for index, char in enumerate(str):
-        print(index)
+        #print(index)
         result.append(pow(ord(char), public_key[0],public_key[1]))
     return result
 
@@ -25,9 +25,11 @@ if __name__ == '__main__':
 
     public_key = file_pub.split(" ")
     public_key = [int(x) for x in public_key]
-    print(file_pub)
+    """ print(file_pub)
     print(file_priv)
-    print(public_key)
+    print(public_key) """
 
-    print(encode(public_key, "hello"))
+    cipher = encode(public_key, "hello")
 
+    cipher = [str(x) for x in cipher]
+    print(cipher)
