@@ -1,13 +1,13 @@
-import os, random, sys
+import os, random, sys, math
 from timeit import default_timer as timer
 
-def gen_random_int(size:int=128, mask=0):
+def gen_random_int(size:int=2, mask=0):
   x = os.urandom(size)
   x = int.from_bytes(x, "little")
   if mask:
     return x
   #x = (x | (1 << (128*8) -1)) | 1
-  return (x | (1 << (128*8) -1)) | 1
+  return (x | (1 << (size*8) -1)) | 1
 
 
 
@@ -75,11 +75,16 @@ def gen_E(num):
       return e
 
 def gen_D(phi, e):
-  for d in range(phi):
+  if(math.gcd(e,phi)!=1):
+    return None
+
+  """ for d in range(phi):
     if((d*e)%phi ==1):
-      return d
+      return d """
+  return pow(e, -1, phi)
 
 def gen_key_pair(p=0,q=0):
+  start = timer()
   if(p==0 or 1 == 0):
     p = gen_prime_number()
     q = gen_prime_number()
@@ -93,6 +98,9 @@ def gen_key_pair(p=0,q=0):
   print("Essa é sua chave publica: ", public_key)
   d = gen_D(phi_N,e)
   print("Essa é sua chave privada: ", d)
+  end = timer()
+  print(end - start)
+  return (public_key, d)
 
 
 if __name__ == '__main__':
