@@ -14,16 +14,18 @@ def base64_map():
 
 #input
 def base64_encoder(str:string):
-  #str = "abc"
+  #padding when lenght isn't multiple of 3
+  while(len(str)%3!=0):
+    str+=' '
+  
   bin_input = ''.join('{0:08b}'.format(ord(x), 'b') for x in str)
-  print(bin_input)
-  bin_list = [bin_input[i:i+6] for i in range(0,len(bin_input), 6)]
-  int_list = [int(x, 2) for x in bin_list]
-  print(int_list)
+  print(len(bin_input))
+  int_list = [int(bin_input[i:i+6], 2) for i in range(0,len(bin_input), 6)]
+  #int_list = [int(x, 2) for x in bin_list]
+  #print(int_list)
   mapping = base64_map()
-  retorno = [mapping[1][x] for x in int_list]
-  retorno = ''.join(retorno)
-  print(retorno)
+  return ''.join([mapping[1][x] for x in int_list])
+  
 
 
 def base64_decoder(str:string):
@@ -35,7 +37,10 @@ def base64_decoder(str:string):
   #print(bin_list)
   int_list = [chr(int(x, 2)) for x in bin_list]
   print(int_list)
-  return ''.join(int_list)
+  return ''.join(int_list).strip()
 
-base64_encoder("abc")
-print(base64_decoder("YWJj"))
+
+#main
+if(__name__ == '__main__'):
+  #print(base64_encoder("I Am Joh"))
+  print(list(base64_decoder(base64_encoder("I Am John"))))
