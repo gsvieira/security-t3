@@ -1,13 +1,16 @@
 import keygen,string
 
-def encode(public_key, str:string):
+def encoder(public_key, str:string):
     result = []
     for index, char in enumerate(str):
         #print(index)
         result.append(pow(ord(char), public_key[0],public_key[1]))
     return result
 
-key = False
+def decoder(priv_key, cipher):
+    return "".join([chr(pow(int(x), priv_key[0], priv_key[1])) for x in cipher])
+    
+key = True
 
 if __name__ == '__main__':
     if key == True:
@@ -16,7 +19,7 @@ if __name__ == '__main__':
             f.write(str(key[0][0])+' '+str(key[0][1]))
         f.close
         with open("rsa_key/rsa.txt", "w") as f:
-            f.write(str(key[1]))
+            f.write(str(key[1][0])+' '+str(key[0][1]))
         f.close
     with open("rsa_key/rsa.pub.txt", "r") as f:
         file_pub = f.read()
@@ -28,8 +31,15 @@ if __name__ == '__main__':
     """ print(file_pub)
     print(file_priv)
     print(public_key) """
+    
 
-    cipher = encode(public_key, "hello")
-
+    cipher = encoder(public_key, "hello")
+    #print(cipher)
     cipher = [str(x) for x in cipher]
-    print(cipher)
+    #print(cipher)
+    priv_key = file_priv.split(" ")
+    priv_key = [int(x) for x in priv_key]
+    #print(priv_key)
+    msg = decoder(priv_key, cipher)
+    print(msg)
+
