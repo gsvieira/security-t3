@@ -1,4 +1,4 @@
-import keygen,string
+import keygen,string, hashlib
 
 def encoder(public_key, str:string):
     result = []
@@ -43,3 +43,5 @@ if __name__ == '__main__':
     msg = decoder(priv_key, cipher)
     print(msg)
 
+    #assinatura
+    
