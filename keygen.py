@@ -94,13 +94,14 @@ def gen_key_pair(p=0,q=0):
   phi_N = phi(p)*phi(q)
 
   e = gen_E(phi_N)
-  public_key = (n, e)
+  public_key = (e, n)
   print("Essa é sua chave publica: ", public_key)
   d = gen_D(phi_N,e)
   print("Essa é sua chave privada: ", d)
   end = timer()
   print(end - start)
-  return (public_key, d)
+  #retorna chave publica (e,n) e chave privada(d,n)
+  return (public_key, (d, public_key[1]))
 
 
 if __name__ == '__main__':
