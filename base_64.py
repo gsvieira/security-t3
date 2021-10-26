@@ -19,7 +19,7 @@ def encoder(str:string):
     str+=' '
   
   bin_input = ''.join('{0:08b}'.format(ord(x), 'b') for x in str)
-  print(len(bin_input))
+  #print(len(bin_input))
   int_list = [int(bin_input[i:i+6], 2) for i in range(0,len(bin_input), 6)]
   #int_list = [int(x, 2) for x in bin_list]
   #print(int_list)
@@ -36,7 +36,7 @@ def decoder(str:string):
   bin_list = [str[i:i+8] for i in range(0,len(str), 8)]
   #print(bin_list)
   int_list = [chr(int(x, 2)) for x in bin_list]
-  print(int_list)
+  #print(int_list)
   return ''.join(int_list).strip()
 
 

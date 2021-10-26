@@ -1,4 +1,4 @@
-import os, random, sys, math
+import os, random, sys, math, base_64
 from timeit import default_timer as timer
 
 def gen_random_int(size:int=128, mask=0):
@@ -9,7 +9,11 @@ def gen_random_int(size:int=128, mask=0):
   #x = (x | (1 << (128*8) -1)) | 1
   return (x | (1 << (size*8) -1)) | 1
 
-
+#chave simetrica de tamanho 128 bits
+def gen_symetric_key(size:int=16):
+  sym_key = str(gen_random_int(size))
+  #print(sym_key)
+  return base_64.encoder(sym_key)
 
 def miller_test(odd, num):
   j = 2 + random.randint(1,num - 4)
@@ -102,23 +106,12 @@ def gen_key_pair(p=0,q=0):
 
 
 if __name__ == '__main__':
-  if (len(sys.argv)<=2 or len(sys.argv)>=4):
+  """ if (len(sys.argv)<=2 or len(sys.argv)>=4):
     gen_key_pair()
   else:
-    gen_key_pair(int(sys.argv[1]), int(sys.argv[2]))
-
-""" 
-start = timer()
-print(start)
-for i in range(20):
-  
-  while (True):
-    prime = gen_random_int()
-    if(is_prime(prime,10)):
-      break;
-  print(i)
-end = timer()
-print(end - start)
- """
+    gen_key_pair(int(sys.argv[1]), int(sys.argv[2])) """
+  key = gen_symetric_key()
+  print(key)
+  print(base_64.decoder(key))
 
 

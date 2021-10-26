@@ -1,25 +1,42 @@
-import keygen,string, hashlib
+from Crypto.Cipher import AES
+import keygen,string, hashlib, base_64
 
-def encoder(public_key, str:string):
+def encode_char(public_key, str:string):
     result = []
     for index, char in enumerate(str):
         #print(index)
         result.append(pow(ord(char), public_key[0],public_key[1]))
     return result
 
-def decoder(priv_key, cipher):
+def decode_char(priv_key, cipher):
     return "".join([chr(pow(int(x), priv_key[0], priv_key[1])) for x in cipher])
+
+    #cifra a chave simetrica
+def encode_block(public_key, block:string):
+    number_str = base_64.decoder(block)
+    num = int(number_str)
+    block_cipher = pow(num, public_key[0], public_key[1])
+    return base_64.encoder(str(block_cipher))
     
+    #decifra a chave simetrica
+def decode_block(priv_key, block:string):
+    number_str = base_64.decoder(block)
+    num = int(number_str)
+    block_cipher = pow(num, priv_key[0], priv_key[1])
+    return base_64.encoder(str(block_cipher)) 
+
+
 key = True
 
 if __name__ == '__main__':
     if key == True:
         key = keygen.gen_key_pair()
         with open("rsa_key/rsa.pub.txt", "w") as f:
+
             f.write(str(key[0][0])+' '+str(key[0][1]))
         f.close
         with open("rsa_key/rsa.txt", "w") as f:
-            f.write(str(key[1][0])+' '+str(key[0][1]))
+            f.write(str(key[1][0])+' '+str(key[1][1]))
         f.close
     with open("rsa_key/rsa.pub.txt", "r") as f:
         file_pub = f.read()
@@ -33,14 +50,14 @@ if __name__ == '__main__':
     print(public_key) """
     
 
-    cipher = encoder(public_key, "hello")
+    cipher = encode_char(public_key, "hello")
     #print(cipher)
     cipher = [str(x) for x in cipher]
     #print(cipher)
     priv_key = file_priv.split(" ")
     priv_key = [int(x) for x in priv_key]
     #print(priv_key)
-    msg = decoder(priv_key, cipher)
+    msg = decode_char(priv_key, cipher)
     print(msg)
 
     #assinatura
