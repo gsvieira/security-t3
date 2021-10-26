@@ -13,7 +13,7 @@ def base64_map():
   #print(map_char_to_int)
 
 #input
-def base64_encoder(str:string):
+def encoder(str:string):
   #padding when lenght isn't multiple of 3
   while(len(str)%3!=0):
     str+=' '
@@ -28,7 +28,7 @@ def base64_encoder(str:string):
   
 
 
-def base64_decoder(str:string):
+def decoder(str:string):
   mapping = base64_map()
   int_list = ['{0:06b}'.format(mapping[0][x]) for x in str]
   #print(int_list)
@@ -43,4 +43,4 @@ def base64_decoder(str:string):
 #main
 if(__name__ == '__main__'):
   #print(base64_encoder("I Am Joh"))
-  print(list(base64_decoder(base64_encoder("I Am John"))))
+  print(list(decoder(encoder("I Am John"))))
