@@ -1,3 +1,4 @@
+#fix keys and make AES 
 from Crypto.Cipher import AES
 import keygen,string, hashlib, base_64
 
@@ -8,8 +9,8 @@ def encode_char(public_key, str:string):
         result.append(pow(ord(char), public_key[0],public_key[1]))
     return result
 
-def decode_char(priv_key, cipher):
-    return "".join([chr(pow(int(x), priv_key[0], priv_key[1])) for x in cipher])
+def decode_char(public_key, priv_key, cipher):
+    return "".join([chr(pow(int(x), priv_key[0], public_key[1])) for x in cipher])
 
     #cifra a chave simetrica
 def encode_block(public_key, block:string):
@@ -19,10 +20,10 @@ def encode_block(public_key, block:string):
     return base_64.encoder(str(block_cipher))
     
     #decifra a chave simetrica
-def decode_block(priv_key, block:string):
+def decode_block(public_key, priv_key, block:string):
     number_str = base_64.decoder(block)
     num = int(number_str)
-    block_cipher = pow(num, priv_key[0], priv_key[1])
+    block_cipher = pow(num, priv_key[0], public_key[1])
     return base_64.encoder(str(block_cipher)) 
 
 
@@ -57,7 +58,7 @@ if __name__ == '__main__':
     priv_key = file_priv.split(" ")
     priv_key = [int(x) for x in priv_key]
     #print(priv_key)
-    msg = decode_char(priv_key, cipher)
+    msg = decode_char(public_key, priv_key, cipher)
     print(msg)
 
     #assinatura
