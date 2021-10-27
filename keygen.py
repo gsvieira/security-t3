@@ -1,7 +1,7 @@
 import os, random, sys, math, base_64
 from timeit import default_timer as timer
 
-def gen_random_int(size:int=128, mask=0):
+def gen_random_int(size:int=32, mask=0):
   x = os.urandom(size)
   x = int.from_bytes(x, "little")
   if mask:
@@ -9,11 +9,6 @@ def gen_random_int(size:int=128, mask=0):
   #x = (x | (1 << (128*8) -1)) | 1
   return (x | (1 << (size*8) -1)) | 1
 
-#chave simetrica de tamanho 128 bits
-def gen_symetric_key(size:int=16):
-  sym_key = str(gen_random_int(size))
-  #print(sym_key)
-  return base_64.encoder(sym_key)
 
 def miller_test(odd, num):
   j = 2 + random.randint(1,num - 4)
@@ -101,17 +96,32 @@ def gen_key_pair(p=0,q=0):
   print("Essa é sua chave privada: ", d)
   end = timer()
   print(end - start)
-  #retorna chave publica (e,n) e chave privada(d,n)
-  return (public_key, (d, public_key[1]))
+  #codifica chave em base64
+  public_key = [base_64.encoder(str(x)) for x in public_key]
+  d = base_64.encoder(str(d))
+  #retorna chave publica (e,n) e chave privada(d)
+  return (public_key, d)
 
+#chave simetrica de tamanho 128 bits
+def gen_symetric_key(size:int=16):
+  sym_key = os.urandom(size)
+  print(sys.getsizeof(sym_key))
+  sym_key = int.from_bytes(sym_key, "little")
+  #sym_key = gen_random_int(size, mask= 0)
+
+  
+  return base_64.encoder(sym_key)
 
 if __name__ == '__main__':
   """ if (len(sys.argv)<=2 or len(sys.argv)>=4):
     gen_key_pair()
   else:
     gen_key_pair(int(sys.argv[1]), int(sys.argv[2])) """
-  key = gen_symetric_key()
+  key = gen_key_pair()
   print(key)
-  print(base_64.decoder(key))
+  e = key[0][0]
+  n = key[0][1]
+  d = key[1]
+  print(base_64.decoder(e) + ' ' + base_64.decoder(n) + ' ' + base_64.decoder(d))
 
-
+  gen_symetric_key()
