@@ -27,18 +27,20 @@ def decode_block(public_key, priv_key, block:string):
     return base_64.encoder(str(block_cipher)) 
 
 def aes_cipher(msg, encoded_aes_key, padding_char):
-    aes_key = base_64.decoder(encoded_aes_key)
+    aes_key = base_64.b_decoder(encoded_aes_key)
     cipher = AES.new(aes_key)
     padded_msg = msg + (padding_char * ((16-len(msg)) % 16))
     ciphered_msg = cipher.encrypt(padded_msg)
-    return base_64.encoder(ciphered_msg)
+    return base_64.b_encoder(ciphered_msg)
 
 def aes_decipher(encoded_ciphered_msg, encoded_aes_key, padding_char):
-    aes_key = base_64.decoder(encoded_aes_key)
-    ciphered_msg = base_64.decoder(encoded_ciphered_msg)
+    aes_key = base_64.b_decoder(encoded_aes_key)
+    ciphered_msg = base_64.b_decoder(encoded_ciphered_msg)
+    print(ciphered_msg)
     cipher = AES.new(aes_key)
     deciphered_msg = cipher.decrypt(ciphered_msg)
-    unpadded_msg = deciphered_msg.rstrip(padding_char)
+    print(deciphered_msg)
+    unpadded_msg = deciphered_msg.decode("utf-8").rstrip(padding_char)
     return unpadded_msg
 
 if __name__ == '__main__':
@@ -82,6 +84,8 @@ if __name__ == '__main__':
     #print(priv_key)
     msg = decode_char(public_key, priv_key, cipher)
     print(msg)
+
+
     ciphered_msg = aes_cipher(msg, aes_key, ":")
     deciphered_msg = aes_decipher(ciphered_msg, aes_key, ":")
     print(ciphered_msg)

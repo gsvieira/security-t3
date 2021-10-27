@@ -3,7 +3,7 @@ from timeit import default_timer as timer
 
 def gen_random_int(size:int=32, mask=0):
   x = os.urandom(size)
-  x = int.from_bytes(x, "little")
+  x = int.from_bytes(x, "big")
   if mask:
     return x
   #x = (x | (1 << (128*8) -1)) | 1
@@ -105,8 +105,8 @@ def gen_key_pair(p=0,q=0):
 #chave simetrica de tamanho 128 bits
 def gen_symetric_key(size:int=16):
   sym_key = os.urandom(size)
-  print(sys.getsizeof(sym_key))
-  sym_key = int.from_bytes(sym_key, "little")
+  print(len(sym_key))
+  return base_64.b_encoder(sym_key)
   #sym_key = gen_random_int(size, mask= 0)
 
   

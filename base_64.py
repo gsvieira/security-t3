@@ -39,8 +39,31 @@ def decoder(str:string):
   #print(int_list)
   return ''.join(int_list).strip()
 
+def b_encoder(byteArr:bytes):
+  while(len(byteArr)%3!=0):
+    byteArr = byteArr+ b'\x00'
+  #print(byteArr)
+  bin_input = ''.join(format(byte, '08b') for byte in byteArr)
+  int_list = [int(bin_input[i:i+6], 2) for i in range(0,len(bin_input), 6)]
+  mapping = base64_map()
+  return ''.join([mapping[1][x] for x in int_list])
+
+def b_decoder(str:string):
+  mapping = base64_map()
+  int_list = ['{0:06b}'.format(mapping[0][x]) for x in str]
+  byte_str = ''.join(int_list)
+  #elimina o padding
+  byte_str = byte_str[:128]
+  bin_list = [byte_str[i:i+8] for i in range(0,len(byte_str), 8)]
+  #print(bin_list)
+  int_list = [int(x, 2).to_bytes(1,'big') for x in bin_list]
+  #print(int_list)
+  #print(b_result)
+  return b"".join(int_list)
 
 #main
 if(__name__ == '__main__'):
   #print(base64_encoder("I Am Joh"))
-  print(list(decoder(encoder("I Am John"))))
+  #print(list(decoder(encoder("I Am John"))))
+  test = b'\xe1\xc5\x8f\xc1Z \x11\x0c\x95\t P\xb8k\x81\xb5'
+  print(b_decoder(b_encoder(test)))
