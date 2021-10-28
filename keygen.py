@@ -88,21 +88,21 @@ def gen_key_pair(p=0,q=0):
 
   e = gen_E(phi_N)
   public_key = (e, n)
-  print("Essa é sua chave publica: ", public_key)
   d = gen_D(phi_N,e)
-  print("Essa é sua chave privada: ", d)
   end = timer()
-  print(end - start)
+  #print(end - start)
   #codifica chave em base64
   public_key = [base_64.encoder(str(x)) for x in public_key]
   d = base_64.encoder(str(d))
+  print("Essa é sua chave publica: ", public_key)
+  print("Essa é sua chave privada: ", d)
   #retorna chave publica (e,n) e chave privada(d)
   return (public_key, d)
 
 #chave simetrica de tamanho 128 bits
 def gen_symetric_key(size:int=16):
   sym_key = os.urandom(size)
-  print(len(sym_key))
+  #print(len(sym_key))
   return base_64.b_encoder(sym_key)
 
 if __name__ == '__main__':
