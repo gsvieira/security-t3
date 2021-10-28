@@ -1,12 +1,12 @@
 import os, random, sys, math, base_64
 from timeit import default_timer as timer
 
-def gen_random_int(size:int=32, mask=0):
+def gen_random_int(size:int=128, mask=0):
   x = os.urandom(size)
   x = int.from_bytes(x, "big")
   if mask:
     return x
-  #x = (x | (1 << (128*8) -1)) | 1
+  #aplicação de mascara para ser um numero grande e um numero impar
   return (x | (1 << (size*8) -1)) | 1
 
 
@@ -16,7 +16,6 @@ def miller_test(odd, num):
   #j^odd % num
   x = pow(j, odd, num)
 
-  
   if(x == 1 or x == num - 1):
     return True
   
@@ -85,8 +84,6 @@ def gen_key_pair(p=0,q=0):
     p = gen_prime_number()
     q = gen_prime_number()
   n=p*q
-  """ print(p)
-  print(q) """
   phi_N = phi(p)*phi(q)
 
   e = gen_E(phi_N)
@@ -107,10 +104,6 @@ def gen_symetric_key(size:int=16):
   sym_key = os.urandom(size)
   print(len(sym_key))
   return base_64.b_encoder(sym_key)
-  #sym_key = gen_random_int(size, mask= 0)
-
-  
-  return base_64.encoder(sym_key)
 
 if __name__ == '__main__':
   """ if (len(sys.argv)<=2 or len(sys.argv)>=4):

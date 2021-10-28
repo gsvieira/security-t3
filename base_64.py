@@ -10,7 +10,6 @@ def base64_map():
     map_char_to_int[char] = index
 
   return (map_char_to_int, map_int_to_char)
-  #print(map_char_to_int)
 
 #input
 def encoder(str:string):
